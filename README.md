@@ -1,5 +1,6 @@
-A Home Automation System Project
-# Project Features 
+# A Home Automation System Project
+The Repository contains schematics, Bill of Materials and necessary prototyping files. 
+### Project Features 
 - Switch between ON and OFF state 
     - mechanical relays 
 - Control System: 
@@ -16,7 +17,7 @@ A Home Automation System Project
 - HMI 
     - OLED 
    
- # wishlist 
+### wishlist 
   - battery power 
   - Fire Detection 
   - Clap Control 
