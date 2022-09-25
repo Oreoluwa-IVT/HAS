@@ -1,5 +1,5 @@
 /*********
- 
+
 *********/
 
 #include <Arduino.h>
@@ -16,6 +16,13 @@
 //  LED Pins
 static const int greenLED = 23; // the pin that connects the green LED of RGB LED
 
+// constants won't change. They're used here to set pin numbers:
+const int button1Pin = 32; // the number of the pushbutton pin
+const int button2Pin = 33; // the number of the pushbutton pin
+
+// variables will change:
+int button1State = 0; // variable for reading the pushbutton status
+int button2State = 0; // variable for reading the pushbutton status
 /*Configuration*/
 
 // LCD
@@ -157,6 +164,10 @@ void setup()
   pinMode(Relay_one, OUTPUT);
   pinMode(Relay_two, OUTPUT);
 
+  // initialize the pushbutton pin as an input:
+  pinMode(button1Pin, INPUT);
+  pinMode(button2Pin, INPUT);
+
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("System Startup");
@@ -176,19 +187,50 @@ void setup()
 // the loop function runs over and over again forever
 void loop()
 {
-
-  digitalWrite(greenLED, HIGH); // turn the LED on (HIGH is the voltage level)
+ digitalWrite(Relay_one, LOW);
+    digitalWrite(Relay_two, LOW);
+  // read the state of the pushbutton value:
+  button1State = digitalRead(button1Pin);
+  button2State = digitalRead(button2Pin);
+  // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
+  if (button1State == HIGH)
+  {
+    // turn LED on:
+    digitalWrite(greenLED, HIGH); // turn the LED on (HIGH is the voltage level)
+    digitalWrite(Relay_one, HIGH);
+    digitalWrite(Relay_two, LOW);
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Relay One is ON");
+    delay(500);
+  }
+  else if (button2State == HIGH)
+  {
+    // turn LED off:
+    digitalWrite(greenLED, HIGH); // turn the LED on (HIGH is the voltage level)
+    digitalWrite(Relay_two, HIGH);
+    digitalWrite(Relay_one, LOW);
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Relay Two is ON");
+    delay(500);
+  }
 
   // Normally Open configuration, send LOW signal to let current flow
   // (if you're usong Normally Closed configuration send HIGH signal)
-  digitalWrite(Relay_one, LOW);
+  else
+  {
+    digitalWrite(greenLED, LOW);
+    // digitalWrite(Relay_one, LOW);
+    // digitalWrite(Relay_two, LOW);
+  }
 
-  Serial.println("Current Flowing");
-  delay(5000); // wait for a second
+  // Serial.println("Current Flowing");
+  // delay(5000); // wait for a second
 
-  // Normally Open configuration, send HIGH signal stop current flow
-  // (if you're usong Normally Closed configuration send LOW signal)
-  digitalWrite(Relay_one, HIGH);
-  Serial.println("Current not Flowing");
-  delay(5000);
+  // // Normally Open configuration, send HIGH signal stop current flow
+  // // (if you're usong Normally Closed configuration send LOW signal)
+  // 
+  // Serial.println("Current not Flowing");
+  // delay(5000);
 }
